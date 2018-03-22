@@ -1,9 +1,11 @@
-# coding: utf-8
 """
 Frise chronologique.
+
+Python 3.
 """
 
 import codecs
+from typing import Dict, Tuple, List, Union
 
 try:
     from pyfiglet import figlet_format
@@ -13,141 +15,137 @@ except ImportError:
 __version__ = '0.0.1'
 
 
-def frise(events, **kwargs):
+def frise(
+    events: Dict[int, Union[str, List[str]]],
+    title: str='',
+    length: int=30,
+    padding: int=0,
+    style: Tuple[str, str, str]=('|', '•', ' '),
+    figlet: Dict[str, str]=None,
+) -> str:
     """
     La frise.
 
-    :param events dict: Events, ie: {date1: name1, date2: name2, ...}
-    :param kwargs: Optional additional arguments, possible values are:
-        :param title str: Title of the timeline
-        :param length int:
-        :param padding int: Left padding of the timeline
-        :param style list: Characters of the timeline:
-             - the first where there is no event
-             - the second where there is an event
-             - the third is used for left padding
-        :param figlet dict: Figlet options to use on the title
-        :param use str: Return type:
-             - print: print the timeline
-             - return: return the timeline
-             - filename: save the timeline in the given filename
+    :param dict events: Events, ie: {date1: name1, date2: name2, ...}
+    :param str title: Title of the time line
+    :param int length:
+    :param int padding: Left padding of the time line
+    :param list style: Characters of the time line:
+         - the first where there is no event
+         - the second where there is an event
+         - the third is used for left padding
+    :param dict figlet: Figlet options to use on the title
     """
 
-    # Options
-    title = kwargs.pop('title', '')
-    length = kwargs.pop('length', 30)
-    padding = kwargs.pop('padding', 0)
-    style = kwargs.pop('style', ('|', '•', ' '))
-    use = kwargs.pop('use', 'print')
-
     # Title
-    if title and figlet_format:
-        title = figlet_format(title, **kwargs.pop('figlet', {}))
+    if all((title, figlet, figlet_format)):
+        title = figlet_format(title, **figlet)
 
-    # Create the intermediary timeline
-    indexes = sorted(events)
-    first = indexes.pop(0)
-    last = indexes.pop()
+    # Create the intermediary time line
+    first, *indexes, last = sorted(events)
     event_len = len(max(str(first), str(last), key=len)) + 1
     timeline = [''] * length
-    timeline[0] = (first, events[first])
-    timeline[-1] = (last, events[last])
+    timeline[0] = first, events[first]
+    timeline[-1] = last, events[last]
 
-    # Calculate each and every event position in the timeline
+    # Calculate each and every event position in the time line
     for event in indexes:
         idx = (float(event) - first) / (last - first) * length + 1
         while timeline[int(idx)]:
             idx += 1
         timeline[int(idx)] = event, events[event]
 
-    # The final timeline
-    out = []
+    # The final time line
+    out = title.splitlines()
     for event in timeline:
-        if isinstance(event, tuple):
-            # This is an event!
-            date, names = event
-            if isinstance(names, tuple):
-                # There are several events for a given date
-                line = '{date:>{padding}} {char} {name}'.format(
-                    date=date,
-                    padding=event_len - 1,
-                    char=style[1],
-                    name=names[0])
-                out += [line]
-                idx = line.index(names[0]) - 4
-                for name in names[1:]:
-                    out += ['{space:>{padding}}{char} {name}'.format(
-                        space=' ',
-                        padding=idx,
-                        char=style[1],
-                        name=name)]
-            else:
-                out += ['{date:>{padding}} {char} {name}'.format(
-                    date=date,
-                    padding=event_len - 1,
-                    char=style[1],
-                    name=names)]
-        else:
-            out += [' {char:>{length}}'.format(
-                length=event_len,
-                char=style[0])]
+        if not isinstance(event, tuple):
+            # Separator
+            out += [f'{style[2]:<{padding}} {style[0]:>{event_len}}']
+            continue
 
-    out = ['{char:>{padding}}{line}'.format(char=style[2],
-                                            padding=padding,
-                                            line=line).decode('utf-8')
-           for line in out]
-    if title:
-        out = title.splitlines() + out
+        # This is an event!
+        date, names = event
+        if not isinstance(names, tuple):
+            # Single event
+            line = (f'{style[2]:<{padding}}{date:>{event_len - 1}}'
+                    f' {style[1]} {names}')
+            out += [line]
+            continue
 
-    # Different output possibilities
-    if use == 'print':
-        print('\n'.join(out))
-        return
-    elif use == 'return':
-        return out
-    with codecs.open(use, 'w', encoding='utf-8') as handler:
-        handler.write('\n'.join(out) + '\n')
+        # There are several events for a given date
+        line = (f'{style[2]:<{padding}}{date:>{event_len - 1}}'
+                f' {style[1]} {names[0]}')
+        out += [line]
+        idx = line.index(names[0]) - padding - 2
+        for name in names[1:]:
+            out += [f'{style[2]:<{padding}} {style[1]:>{idx}} {name}']
+
+    return out
 
 
 def alien():
     """ Example: Alien. """
 
-    events = {2122: 'Alien',
-              2179: ('Aliens', 'Alien³'),
-              2379: 'Alien: Resurrection',
-              2093: 'Prometheus',
-              2104: 'Alien: Covenant'}
-    frise(events, title='Alien', padding=6, figlet={'font': 'cyberlarge'})
+    events = {
+        2122: 'Alien',
+        2179: ('Aliens', 'Alien³'),
+        2379: 'Alien: Resurrection',
+        2093: 'Prometheus',
+        2104: 'Alien: Covenant',
+    }
+    args = {
+        'title': 'Alien',
+        'padding': 6,
+        'figlet': {'font': 'cyberlarge'},
+    }
+    out = frise(events, **args)
+    print('\n'.join(out))
 
 
 def xmen():
-    """ Example: X-Men. """
+    """
+    Example: X-Men.
+    Save the output to the "x-men.txt" file.
+    """
 
-    events = {2005: ('X-Men', 'X2'),
-              2006: 'X-Men: The Last Stand',
-              1990: 'X-Men Origins: Wolverine',
-              1962: 'X-Men: First Class',
-              2013: 'The Wolverine',
-              2023: 'X-Men: Days of Future Past',
-              1983: 'X-Men: Apocalypse',
-              2029: 'Logan'}
-    frise(events, title='X-Men', padding=3, use='x-men.txt')
+    events = {
+        2005: ('X-Men', 'X2'),
+        2006: 'X-Men: The Last Stand',
+        1990: 'X-Men Origins: Wolverine',
+        1962: 'X-Men: First Class',
+        2013: 'The Wolverine',
+        2023: 'X-Men: Days of Future Past',
+        1983: 'X-Men: Apocalypse',
+        2029: 'Logan',
+    }
+    args = {
+        'title': 'X-Men',
+        'padding': 3,
+    }
+    out = frise(events, **args)
+    with codecs.open('x-men.txt', 'w', encoding='utf-8') as handler:
+        handler.write('\n'.join(out) + '\n')
 
 
 def star_wars():
     """ Example: Star Wars. """
 
-    events = {0: ('Rogue One',
-                  'Star Wars Episode IV: A New Hope'),
-              3: 'Star Wars Episode V: The Empire Strikes Back',
-              4: 'Star Wars Episode VI: Return of the Jedi',
-              -32: 'Star Wars Episode I: The Phantom Menace',
-              -22: 'Star Wars Episode II: Attack of the Clones',
-              -19: 'Star Wars Episode III: Revenge of the Sith',
-              34: 'Star Wars Episode VII: The Force Awakens',
-              55: 'Star Wars Episode VIII: The Last Jedi'}
-    return frise(events, title='Star Wars', use='return',
-                 figlet={'font': 'starwars'})
+    events = {
+        0: ('Rogue One', 'Episode IV: A New Hope'),
+        3: 'Episode V: The Empire Strikes Back',
+        4: 'Episode VI: Return of the Jedi',
+        -32: 'Episode I: The Phantom Menace',
+        -22: 'Episode II: Attack of the Clones',
+        -19: 'Episode III: Revenge of the Sith',
+        34: 'Episode VII: The Force Awakens',
+        55: 'Episode VIII: The Last Jedi',
+    }
+    args = {
+        'title': 'Star Wars',
+        'padding': 6,
+        'figlet': {'font': 'starwars'},
+    }
+    return frise(events, **args)
 
 
 if __name__ == '__main__':
