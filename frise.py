@@ -4,7 +4,6 @@ Frise chronologique.
 Python 3.
 """
 
-import codecs
 from typing import Dict, Tuple, List, Union
 
 try:
@@ -81,74 +80,3 @@ def frise(
             out += [f'{style[2]:<{padding}} {style[1]:>{idx}} {name}']
 
     return out
-
-
-def alien():
-    """ Example: Alien. """
-
-    events = {
-        2122: 'Alien',
-        2179: ('Aliens', 'Alien³'),
-        2379: 'Alien: Resurrection',
-        2093: 'Prometheus',
-        2104: 'Alien: Covenant',
-    }
-    args = {
-        'title': 'Alien',
-        'padding': 6,
-        'figlet': {'font': 'cyberlarge'},
-    }
-    out = frise(events, **args)
-    print('\n'.join(out))
-
-
-def xmen():
-    """
-    Example: X-Men.
-    Save the output to the "x-men.txt" file.
-    """
-
-    events = {
-        2005: ('X-Men', 'X2'),
-        2006: 'X-Men: The Last Stand',
-        1990: 'X-Men Origins: Wolverine',
-        1962: 'X-Men: First Class',
-        2013: 'The Wolverine',
-        2023: 'X-Men: Days of Future Past',
-        1983: 'X-Men: Apocalypse',
-        2029: 'Logan',
-    }
-    args = {
-        'title': 'X-Men',
-        'padding': 3,
-    }
-    out = frise(events, **args)
-    with codecs.open('x-men.txt', 'w', encoding='utf-8') as handler:
-        handler.write('\n'.join(out) + '\n')
-
-
-def star_wars():
-    """ Example: Star Wars. """
-
-    events = {
-        0: ('Rogue One', 'Episode IV: A New Hope'),
-        3: 'Episode V: The Empire Strikes Back',
-        4: 'Episode VI: Return of the Jedi',
-        -32: 'Episode I: The Phantom Menace',
-        -22: 'Episode II: Attack of the Clones',
-        -19: 'Episode III: Revenge of the Sith',
-        34: 'Episode VII: The Force Awakens',
-        55: 'Episode VIII: The Last Jedi',
-    }
-    args = {
-        'title': 'Star Wars',
-        'padding': 6,
-        'figlet': {'font': 'starwars'},
-    }
-    return frise(events, **args)
-
-
-if __name__ == '__main__':
-    alien()
-    xmen()
-    print('\n'.join(star_wars()))
