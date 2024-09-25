@@ -5,6 +5,7 @@ def alien():
 
     events = {
         2122: 'Alien',
+        2142: 'Alien: Romulus',
         2179: ('Aliens', 'Alien³'),
         2379: 'Alien: Resurrection',
         2093: 'Prometheus',
