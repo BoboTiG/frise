@@ -1,5 +1,6 @@
 from frise import frise
 
+
 def alien():
     """ Example: Alien. """
 
