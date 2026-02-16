@@ -5,11 +5,12 @@ def alien():
     """ Example: Alien. """
 
     events = {
+        2120: 'Alien: Earth',
         2122: 'Alien',
         2142: 'Alien: Romulus',
         2179: ('Aliens', 'Alien³'),
-        2379: 'Alien: Resurrection',
-        2093: 'Prometheus',
+        2381: 'Alien: Resurrection',
+        2089: 'Prometheus',
         2104: 'Alien: Covenant',
     }
     args = {
