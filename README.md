@@ -2,7 +2,7 @@
 
 Historical timeline (ou frise chronologique, d'où le nom du projet).
 
-Python 3.6+ (+ module `pyfiglet` [option])
+Optionnellement, requiert le module `pyfiglet` pour afficher un joli titre.
 
 ## Exemple
 
@@ -13,12 +13,12 @@ PYTHONPATH=$(pwd) python examples/alien.py
  |_____| |        |   |______ | \  |
  |     | |_____ __|__ |______ |  \_|
 
-      2093 • Prometheus
+      2089 • Prometheus
            |
       2104 • Alien: Covenant
            |
+      2120 • Alien: Earth
       2122 • Alien
-           |
       2142 • Alien: Romulus
            |
            |
@@ -43,5 +43,5 @@ PYTHONPATH=$(pwd) python examples/alien.py
            |
            |
            |
-      2379 • Alien: Resurrection
+      2381 • Alien: Resurrection
 ```
