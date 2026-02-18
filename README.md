@@ -16,15 +16,15 @@ PYTHONPATH=$(pwd) python examples/alien.py
       2089 • Prometheus
            |
       2104 • Alien: Covenant
-           |
       2120 • Alien: Earth
       2122 • Alien
-      2142 • Alien: Romulus
            |
+      2142 • Alien: Romulus
            |
            |
       2179 • Aliens
            • Alien³
+           |
            |
            |
            |
