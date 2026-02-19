@@ -1,0 +1,112 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "frise"
+description = "Frise chronologique."
+readme = "README.md"
+requires-python = ">= 3.10"
+authors = [
+  { name = "Mickaël Schoentgen", email="contact@tiger-222.fr" },
+]
+maintainers = [
+  { name = "Mickaël Schoentgen", email="contact@tiger-222.fr" },
+]
+license = { file = "LICENSE" }
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Terminals",
+]
+keywords = [
+    "frise",
+    "timeline",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://www.tiger-222.fr/?d=2017/12/29/17/00/38-frise-chronologique-en-python"
+Source = "https://github.com/BoboTiG/frise"
+Sponsor = "https://github.com/sponsors/BoboTiG"
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "twine",
+]
+
+[tool.hatch.version]
+path = "frise.py"
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "examples",
+  "frise.py",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "frise.py",
+]
+
+[tool.mypy]
+# Ensure we know what we do
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+
+# Imports management
+ignore_missing_imports = true
+follow_imports = "skip"
+
+# Ensure full coverage
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+
+# Restrict dynamic typing (a little)
+# e.g. `x: List[Any]` or x: List`
+# disallow_any_generics = true
+
+strict_equality = true
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+addopts = """
+  --cov=frise
+  --cov-report=term-missing:skip-covered
+  -r fE
+  --showlocals
+  --strict-markers
+  -vvv
+"""
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

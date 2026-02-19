@@ -1,14 +1,21 @@
-# Frise
+# Frise Chronologique
 
-Historical timeline (ou frise chronologique, d'où le nom du projet).
+Historical timeline.
 
-Optionnellement, requiert le module `pyfiglet` pour afficher un joli titre.
+Optionally, requires the `pyfiglet` module for pretty tiltles.
 
-## Exemple
+## Installation:
 
 ```bash
-PYTHONPATH=$(pwd) python examples/alien.py
+$ python -m pip install frise
+```
 
+## Examples
+
+Look at the [examples/](examples/) subfolder for more examples, notably [asimov.py](examples/asimov.py) which shows colors usage.
+
+```bash
+$ uv run examples/alien.py
  _______        _____ _______ __   _
  |_____| |        |   |______ | \  |
  |     | |_____ __|__ |______ |  \_|

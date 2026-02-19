@@ -1,3 +1,9 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "frise",
+# ]
+# ///
 from frise import frise
 
 

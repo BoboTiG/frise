@@ -1,4 +1,5 @@
 # Folders
+dist/
 __pycache__/
 
 # Files
