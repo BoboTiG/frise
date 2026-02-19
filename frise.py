@@ -12,7 +12,7 @@ try:
 except ImportError:
     figlet_format = None
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __author__ = "Mickaël Schoentgen"
 __copyright__ = f"""
 Copyright (c) 2017-2026, {__author__}
@@ -104,7 +104,7 @@ def colorize_text(text: str, tag_colors: dict[str, str]) -> str:
     result = text
 
     # Remplacer chaque tag par sa version colorisée
-    for tag_content in extract_tags(text):
+    for tag_content in extract_tags(result):
         tag_full = f"[{tag_content}]"
         if tag_content in tag_colors:
             colored_tag = ANSIColors.colorize(tag_full, tag_colors[tag_content])
