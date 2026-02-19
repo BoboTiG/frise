@@ -6,6 +6,8 @@ Optionally, requires the `pyfiglet` module for pretty tiltles.
 
 ## Installation:
 
+[![PyPI version](https://badge.fury.io/py/frise.svg)](https://pypi.org/project/frise/)
+
 ```bash
 $ python -m pip install frise
 ```
