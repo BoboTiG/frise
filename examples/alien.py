@@ -1,7 +1,7 @@
 from frise import frise
 
 
-def alien():
+def alien() -> None:
     """Example: Alien."""
 
     events = {

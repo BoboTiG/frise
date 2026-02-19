@@ -1,7 +1,7 @@
 from frise import frise
 
 
-def asimov():
+def asimov() -> None:
     """Example: Isaac Asimov life work."""
 
     events = {

@@ -127,10 +127,7 @@ def assign_colors(events: dict[int, str | tuple[str, ...]]) -> dict[str, str]:
     all_tags = set()
 
     for event_data in events.values():
-        if isinstance(event_data, str):
-            texts = [event_data]
-        else:
-            texts = event_data
+        texts = [event_data] if isinstance(event_data, str) else event_data
 
         for text in texts:
             tags = extract_tags(text)
@@ -147,8 +144,9 @@ def assign_colors(events: dict[int, str | tuple[str, ...]]) -> dict[str, str]:
     return tag_colors
 
 
-def frise(
+def frise(  # noqa: PLR0915,PLR0912
     events: dict[int, str | tuple[str, ...]],
+    *,
     title: str = "",
     length: int = 30,
     padding: int = 0,
@@ -161,7 +159,7 @@ def frise(
     Génère une frise chronologique ASCII.
 
     Args:
-        events: Dictionnaire année -> description(s)
+        events: Dictionnaire année -> évènement(s)
         title: Titre de la frise
         length: Longueur de la frise en lignes
         padding: Espacement à gauche
@@ -227,7 +225,6 @@ def frise(
 
     # Placer chaque événement en évitant les collisions
     timeline = []  # Liste dynamique au lieu de taille fixe
-    last_year = None
 
     for pos_float, year, names in positions:
         ideal_slot = round(pos_float)
@@ -252,7 +249,8 @@ def frise(
         timeline.extend([None] * (length - len(timeline)))
 
     # Construction de la sortie
-    out = title.splitlines() if title else []
+    out = title.rstrip().splitlines() if title else []
+    out.append("")
     event_width = len(str(max_year))
 
     for item in timeline:
@@ -267,8 +265,6 @@ def frise(
 
             # Lignes supplémentaires pour les événements multiples
             for name in names[1:]:
-                out.append(
-                    f"{style[2]:<{padding}} {style[1]:>{event_width + 1}} {colorize_text(name, tag_colors)}"
-                )
+                out.append(f"{style[2]:<{padding}} {style[1]:>{event_width + 1}} {colorize_text(name, tag_colors)}")
 
     return out

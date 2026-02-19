@@ -1,7 +1,7 @@
 from frise import frise
 
 
-def xmen():
+def xmen() -> None:
     """
     Example: X-Men.
     Save the output to the "x-men.txt" file.
