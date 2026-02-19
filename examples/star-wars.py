@@ -18,8 +18,9 @@ def star_wars():
         -32: "Episode I: The Phantom Menace",
         -22: "Episode II: Attack of the Clones",
         -19: "Episode III: Revenge of the Sith",
-        34: "Episode VII: The Force Awakens",
-        55: "Episode VIII: The Last Jedi",
+        34: ("Episode VII: The Force Awakens", "Episode VIII: The Last Jedi"),
+        35: "Episode IX: The Rise of Skywalker",
+        -13: "Solo: A Star Wars Story",
     }
     args = {
         "title": "Star Wars",
